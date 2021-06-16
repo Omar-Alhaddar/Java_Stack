@@ -1,0 +1,23 @@
+@charset "ISO-8859-1";
+
+.date{
+	color: blue;
+	margin-top:300px;
+}
+
+.time{
+	color: green;
+	margin-top:300px;
+}
+
+body{
+	margin: 0 auto;
+	text-align: center;
+}
+
+div{
+	margin-top:300px;
+	display: flex;
+ 	justify-content: space-evenly;
+	
+}
