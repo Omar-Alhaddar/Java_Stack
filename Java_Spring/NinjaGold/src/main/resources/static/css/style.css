@@ -1,0 +1,32 @@
+@charset "ISO-8859-1";
+
+.farm,.cave,.house,.casino{
+    width: 200px;
+    height: 200px;
+    border: 2px solid black;
+
+}
+.all{
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+}
+.activity {
+    margin: 0 auto;
+    width: 1100px;
+    height: 200px;
+    border : 3px solid black;
+    overflow: scroll;
+    padding: 15px;
+}
+
+.red{
+    color: red;
+}
+
+.green{
+    color: green;
+}
+span{
+    color: red;
+}
