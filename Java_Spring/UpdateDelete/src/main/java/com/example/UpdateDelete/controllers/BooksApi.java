@@ -2,6 +2,9 @@ package com.example.UpdateDelete.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.UpdateDelete.models.Book;
 import com.example.UpdateDelete.services.BookService;
 
-@RestController
+@Controller
 public class BooksApi {
 	private final BookService bookService;
 
@@ -37,9 +40,10 @@ public class BooksApi {
     }	
     
     @RequestMapping("/api/books/{id}")
-    public Book show(@PathVariable("id") Long id) {
+    public String show(@PathVariable("id") Long id,HttpSession session) {
         Book book = bookService.findBook(id);
-        return book;
+        session.setAttribute("book", book);
+        return "show.jsp";
     }
     
     
