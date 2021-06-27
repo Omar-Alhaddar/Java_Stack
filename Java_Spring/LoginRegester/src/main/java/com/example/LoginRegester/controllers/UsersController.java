@@ -37,7 +37,9 @@ private final UserValidator userValidator;
         return "registrationPage.jsp";
     }
     @RequestMapping("/login")
-    public String login() {
+    public String login(HttpSession session) {
+    	if (session.getAttribute("userID") != null)
+    		return "redirect:/home";
         return "loginPage.jsp";
     }
     
