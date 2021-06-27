@@ -10,7 +10,7 @@
 </head>
 <body>
     <h1>Register!</h1>
-    
+    <p><c:out value="${error}" /></p>
     <p><form:errors path="user.*"/></p>
     
     <form:form method="POST" action="/registration" modelAttribute="user">

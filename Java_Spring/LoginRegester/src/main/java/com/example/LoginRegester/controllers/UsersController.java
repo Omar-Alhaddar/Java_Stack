@@ -42,9 +42,14 @@ private final UserValidator userValidator;
     }
     
     @RequestMapping(value="/registration", method=RequestMethod.POST)
-    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session) {
+    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session, Model model) {
     	userValidator.validate(user, result);
     	if (result.hasErrors()) {
+    		return "registrationPage.jsp";
+    	}
+    	if(userService.findByEmail(user.getEmail()) != null) {
+    		
+    		model.addAttribute("error", "this email is already exist");
     		return "registrationPage.jsp";
     	}
     	else {
