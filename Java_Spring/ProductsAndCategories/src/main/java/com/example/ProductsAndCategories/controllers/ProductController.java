@@ -1,5 +1,7 @@
 package com.example.ProductsAndCategories.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.ProductsAndCategories.models.Category;
+import com.example.ProductsAndCategories.models.CategoryProduct;
 import com.example.ProductsAndCategories.models.Product;
 import com.example.ProductsAndCategories.services.ApiServices;
 
@@ -30,18 +33,59 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/createP")
-	public String createP(@ModelAttribute("products") Product p,BindingResult result) {
+	public String createP(@Valid@ModelAttribute("products") Product p,BindingResult result) {
 		
 		if(result.hasErrors()) {
 			
 			return "index.jsp";
 		}
 		else {
-			api.createproduct(p);
-			return "redirect:/";
+			api.addProduct(p);
+			return "redirect:/products/"+p.getId();
 		}
 		
 		
+	}
+	
+	@RequestMapping("/products/{id}")
+	public String showProduct (@PathVariable("id") long id,@ModelAttribute("relation") CategoryProduct relation, Model model) {
+		model.addAttribute("product", api.findProduct(id));
+		model.addAttribute("categories", api.unAddedCategories(api.findProduct(id)));
+
+		return "pro.jsp";
+	}
+	
+	@PostMapping("/product/addCategory")
+	public String productAddCategory(@Valid @ModelAttribute("relation") CategoryProduct relation,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return "pro.jsp";
+		}
+
+		api.add(relation);
+		return "redirect:/products/" + relation.getProduct().getId();
+
+	}
+	
+	@RequestMapping("/categories/{id}")
+	public String showCategories(Model model, @PathVariable("id") Long id,
+			@ModelAttribute("relation") CategoryProduct relation) {
+		model.addAttribute("category", api.findCategory(id));
+		model.addAttribute("products", api.unAddedProducts(api.findCategory(id)));
+
+		return "cat.jsp";
+	}
+	
+	@PostMapping("/category/addProduct")
+	public String categoryAddProduct(@Valid @ModelAttribute("relation") CategoryProduct relation,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return "showProduct.jsp";
+		}
+
+		api.add(relation);
+		return "redirect:/categories/" + relation.getCategory().getId();
+
 	}
 	
 	@RequestMapping("/cat")
@@ -58,23 +102,12 @@ public class ProductController {
 			return "newcat.jsp";
 		}
 		else {
-			api.createcategory(category);
+			api.addCategory(category);
 			return "redirect:/cat";
 		}
 
 	}
 
-	@RequestMapping("/products/{id}")
-	public String newContact (@PathVariable("id") long id,@ModelAttribute("category") Category category, Model model) {
-		Product x = api.getPro(id).orElse(null);
-		model.addAttribute("products", x);
-		model.addAttribute("cat", api.allNullCategory());
-
-		return "pro.jsp";
-	}
-	
-	
-	
 	}
 	
 

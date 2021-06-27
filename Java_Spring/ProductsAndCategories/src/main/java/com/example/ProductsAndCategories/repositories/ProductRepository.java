@@ -12,6 +12,6 @@ import com.example.ProductsAndCategories.models.Product;
 public interface ProductRepository extends CrudRepository <Product, Long>{
 
 	List<Product> findAll();
-	List<Product> findBycategoriesIdIsNull();
+	List<Product> findByCategoriesNotContains(Category category);
 
 }
